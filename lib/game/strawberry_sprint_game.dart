@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 
 import 'components/player.dart';
 import 'systems/obstacle_spawner.dart';
+import 'game_state.dart';
 
 
 class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
 
   late final Player player;
+
+  GameState currentState = GameState.playing;
   
   @override
   Color backgroundColor() {
@@ -34,6 +37,13 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
   }
 
   void gameOver() {
+
+    currentState = GameState.gameOver;
+
+    overlays.add('gameOver');
+
     pauseEngine();
   }
+
+  
 }

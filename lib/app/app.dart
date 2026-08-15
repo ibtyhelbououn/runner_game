@@ -14,6 +14,41 @@ class RunnerApp extends StatelessWidget {
       title: 'Strawberry Sprint',
       home: GameWidget(
         game: StrawberrySprintGame(),
+        overlayBuilderMap: {
+          'gameOver': (context, game) {
+            return Center(
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'GAME OVER',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        final gameInstance = game as StrawberrySprintGame;
+                        
+                        gameInstance.overlays.remove('gameOver');
+                        gameInstance.resumeEngine();
+                      },
+                      child: const Text('PLAY AGAIN'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        },
       ),
     );
   }
