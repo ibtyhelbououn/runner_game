@@ -37,9 +37,8 @@ class RunnerApp extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         final gameInstance = game as StrawberrySprintGame;
-                        
-                        gameInstance.overlays.remove('gameOver');
-                        gameInstance.resumeEngine();
+
+                        gameInstance.restartGame();
                       },
                       child: const Text('PLAY AGAIN'),
                     ),
