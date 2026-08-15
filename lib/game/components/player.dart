@@ -1,8 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
+import 'package:flame/events.dart';
 
-class Player extends PositionComponent with CollisionCallbacks {
+class Player extends PositionComponent with CollisionCallbacks, DragCallbacks {
   Player({
     required Vector2 position,
     required Vector2 size,
@@ -49,5 +50,33 @@ class Player extends PositionComponent with CollisionCallbacks {
       ..close();
 
     canvas.drawPath(path, leafPaint);
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    position += event.localDelta;
+
+    _keepInsideScreen();
+  }
+
+  void _keepInsideScreen() {
+    final gameSize = findGame()?.size;
+
+    if (gameSize == null) {
+      return;
+    }
+
+    final halfWidth = size.x / 2;
+    final halfHeight = size.y / 2;
+
+    position.x = position.x.clamp(
+      halfWidth,
+      gameSize.x - halfWidth,
+    );
+
+    position.y = position.y.clamp(
+      halfHeight,
+      gameSize.y - halfHeight,
+    );
   }
 }
