@@ -1,6 +1,8 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+
 import 'components/player.dart';
+import 'systems/obstacle_spawner.dart';
 
 
 class StrawberrySprintGame extends FlameGame {
@@ -25,5 +27,9 @@ class StrawberrySprintGame extends FlameGame {
     );
 
     add(player);
+
+    add(
+      ObstacleSpawner(),
+    );
   }
 }

@@ -1,0 +1,48 @@
+import 'dart:math';
+
+import 'package:flame/components.dart';
+import 'package:flame/game.dart';
+
+import '../components/obstacle.dart';
+
+class ObstacleSpawner extends Component
+    with HasGameReference<FlameGame> {
+  ObstacleSpawner({
+    this.spawnInterval = 1.5,
+  });
+
+  final double spawnInterval;
+
+  double _timer = 0;
+
+  final Random _random = Random();
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    _timer += dt;
+
+    if (_timer >= spawnInterval) {
+      _timer = 0;
+      _spawnObstacle();
+    }
+  }
+
+  void _spawnObstacle() {
+    final gameWidth = game.size.x;
+
+    final obstacleSize = 45.0;
+
+    final x = obstacleSize / 2 +
+        _random.nextDouble() * (gameWidth - obstacleSize);
+
+    final obstacle = Obstacle(
+      position: Vector2(x, -obstacleSize),
+      size: obstacleSize,
+      speed: 250,
+    );
+
+    game.add(obstacle);
+  }
+}
