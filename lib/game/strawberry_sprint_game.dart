@@ -5,7 +5,7 @@ import 'components/player.dart';
 import 'systems/obstacle_spawner.dart';
 
 
-class StrawberrySprintGame extends FlameGame {
+class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
 
   late final Player player;
   
@@ -31,5 +31,9 @@ class StrawberrySprintGame extends FlameGame {
     add(
       ObstacleSpawner(),
     );
+  }
+
+  void gameOver() {
+    pauseEngine();
   }
 }

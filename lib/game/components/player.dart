@@ -3,6 +3,9 @@ import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/events.dart';
 
+import 'obstacle.dart';
+import '../strawberry_sprint_game.dart';
+
 class Player extends PositionComponent with CollisionCallbacks, DragCallbacks {
   Player({
     required Vector2 position,
@@ -78,5 +81,21 @@ class Player extends PositionComponent with CollisionCallbacks, DragCallbacks {
       halfHeight,
       gameSize.y - halfHeight,
     );
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollisionStart(intersectionPoints, other);
+
+    if (other is Obstacle) {
+      final game = findGame();
+
+      if (game is StrawberrySprintGame) {
+        game.gameOver();
+      }
+    }
   }
 }
