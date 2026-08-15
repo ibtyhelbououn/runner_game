@@ -1,3 +1,7 @@
+import 'package:flame/game.dart';
+
+import '../game/strawberry_sprint_game.dart';
+
 import 'package:flutter/material.dart';
 
 class RunnerApp extends StatelessWidget {
@@ -8,10 +12,8 @@ class RunnerApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Strawberry Sprint',
-      home: const Scaffold(
-        body: Center(
-          child: Text('Strawberry Sprint'),
-        ),
+      home: GameWidget(
+        game: StrawberrySprintGame(),
       ),
     );
   }

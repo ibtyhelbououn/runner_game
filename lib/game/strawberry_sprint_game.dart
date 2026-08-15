@@ -1,0 +1,29 @@
+import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
+import 'components/player.dart';
+
+
+class StrawberrySprintGame extends FlameGame {
+
+  late final Player player;
+  
+  @override
+  Color backgroundColor() {
+    return const Color(0xFFFFEAF2);
+  }
+  
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    player = Player(
+      position: Vector2(
+        size.x / 2,
+        size.y * 0.8,
+      ),
+      size: Vector2.all(70),
+    );
+
+    add(player);
+  }
+}
