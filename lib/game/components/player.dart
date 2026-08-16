@@ -1,12 +1,11 @@
 import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
-import 'package:flutter/material.dart';
 import 'package:flame/events.dart';
 
 import 'obstacle.dart';
 import '../strawberry_sprint_game.dart';
 
-class Player extends PositionComponent with CollisionCallbacks, DragCallbacks {
+class Player extends SpriteAnimationComponent with CollisionCallbacks, DragCallbacks, HasGameReference<StrawberrySprintGame> {
   Player({
     required Vector2 position,
     required Vector2 size,
@@ -20,44 +19,24 @@ class Player extends PositionComponent with CollisionCallbacks, DragCallbacks {
   Future<void> onLoad() async {
     await super.onLoad();
 
+    animation = await game.loadSpriteAnimation(
+      'cute_strawberry_run.png',
+      SpriteAnimationData.sequenced(
+        amount: 2,
+        stepTime: 0.2,
+        textureSize: Vector2.all(32),
+      ),
+    );
+
     add(
       RectangleHitbox(),
     );
   }
 
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    final paint = Paint()
-      ..color = const Color(0xFFE91E63)
-      ..style = PaintingStyle.fill;
-
-    final center = Offset(size.x / 2, size.y / 2);
-
-    canvas.drawCircle(
-      center,
-      size.x / 2,
-      paint,
-    );
-
-    final leafPaint = Paint()
-      ..color = const Color(0xFF4CAF50)
-      ..style = PaintingStyle.fill;
-
-    final path = Path()
-      ..moveTo(center.dx, 8)
-      ..lineTo(center.dx - 12, 20)
-      ..lineTo(center.dx, 16)
-      ..lineTo(center.dx + 12, 20)
-      ..close();
-
-    canvas.drawPath(path, leafPaint);
-  }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
-    position += event.localDelta;
+    position.x += event.localDelta.x;
 
     _keepInsideScreen();
   }
@@ -70,16 +49,10 @@ class Player extends PositionComponent with CollisionCallbacks, DragCallbacks {
     }
 
     final halfWidth = size.x / 2;
-    final halfHeight = size.y / 2;
 
     position.x = position.x.clamp(
       halfWidth,
       gameSize.x - halfWidth,
-    );
-
-    position.y = position.y.clamp(
-      halfHeight,
-      gameSize.y - halfHeight,
     );
   }
 
@@ -91,11 +64,7 @@ class Player extends PositionComponent with CollisionCallbacks, DragCallbacks {
     super.onCollisionStart(intersectionPoints, other);
 
     if (other is Obstacle) {
-      final game = findGame();
-
-      if (game is StrawberrySprintGame) {
-        game.gameOver();
-      }
+      game.gameOver();
     }
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 
-class Obstacle extends PositionComponent with CollisionCallbacks {
+class Obstacle extends SpriteComponent with CollisionCallbacks {
   Obstacle({
     required Vector2 position,
     required double size,
@@ -19,6 +18,10 @@ class Obstacle extends PositionComponent with CollisionCallbacks {
   Future<void> onLoad() async {
     await super.onLoad();
 
+    sprite = await Sprite.load(
+      'rock_obstacle.PNG',
+    );
+
     add(RectangleHitbox());
   }
 
@@ -33,30 +36,4 @@ class Obstacle extends PositionComponent with CollisionCallbacks {
     }
   }
 
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    final paint = Paint()
-      ..color = const Color(0xFFFF6B81)
-      ..style = PaintingStyle.fill;
-
-    final center = Offset(size.x / 2, size.y / 2);
-
-    canvas.drawCircle(
-      center,
-      size.x / 2,
-      paint,
-    );
-
-    final shinePaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.7)
-      ..style = PaintingStyle.fill;
-
-    canvas.drawCircle(
-      Offset(size.x * 0.35, size.y * 0.3),
-      size.x * 0.12,
-      shinePaint,
-    );
-  }
 }

@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+
+import 'dart:math';
 
 import '../components/obstacle.dart';
 
@@ -14,8 +14,6 @@ class ObstacleSpawner extends Component
   final double spawnInterval;
 
   double _timer = 0;
-
-  final Random _random = Random();
 
   @override
   void update(double dt) {
@@ -32,13 +30,16 @@ class ObstacleSpawner extends Component
   void _spawnObstacle() {
     final gameWidth = game.size.x;
 
-    final obstacleSize = 45.0;
+    const obstacleSize = 45.0;
 
     final x = obstacleSize / 2 +
-        _random.nextDouble() * (gameWidth - obstacleSize);
+        Random().nextDouble() * (gameWidth - obstacleSize);
 
     final obstacle = Obstacle(
-      position: Vector2(x, -obstacleSize),
+      position: Vector2(
+        x,
+        -obstacleSize,
+      ),
       size: obstacleSize,
       speed: 250,
     );
