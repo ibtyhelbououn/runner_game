@@ -25,61 +25,86 @@ class RunnerApp extends StatelessWidget {
                 'menu': (context, game) {
                   return Consumer<GameProvider>(
                     builder: (context, gameProvider, child) {
-                      return Center(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 32,
+                      return Stack(
+                        children: [
+                          // Sky background
+                          Positioned.fill(
+                            child: Image.asset(
+                              'assets/images/grassland_sky_bg.png',
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                '🍓',
-                                style: TextStyle(fontSize: 56),
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'STRAWBERRY SPRINT',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 24),
-                              const Text(
-                                'HIGH SCORE',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${gameProvider.highScore}',
-                                style: const TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 24),
-                              ElevatedButton(
-                                onPressed: () {
-                                  final gameInstance =
-                                      game as StrawberrySprintGame;
 
-                                  gameInstance.startGame();
-                                },
-                                child: const Text('START'),
-                              ),
-                            ],
+                          // Grass / ground
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            top: MediaQuery.of(context).size.height * 0.60,
+                            bottom: 0,
+                            child: Image.asset(
+                              'assets/images/grassland_tileset_bg.png',
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                        ),
+
+                          // Menu card
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40,
+                                vertical: 32,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    '🍓',
+                                    style: TextStyle(fontSize: 56),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const Text(
+                                    'STRAWBERRY SPRINT',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 24),
+                                  const Text(
+                                    'HIGH SCORE',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '${gameProvider.highScore}',
+                                    style: const TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 24),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      final gameInstance =
+                                          game as StrawberrySprintGame;
+
+                                      gameInstance.startGame();
+                                    },
+                                    child: const Text('START'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   );

@@ -8,10 +8,14 @@ import 'components/obstacle.dart';
 
 import '../providers/game_provider.dart';
 
+import 'package:flame/components.dart';
+
 
 class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
 
   late final Player player;
+  late final SpriteComponent background;
+  late final SpriteComponent ground;
 
   GameState currentState = GameState.menu;
 
@@ -32,6 +36,28 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    background = SpriteComponent(
+      sprite: await Sprite.load('grassland_sky_bg.png'),
+      size: size,
+      position: Vector2.zero(),
+    );
+
+    add(background);
+
+    ground = SpriteComponent(
+      sprite: await Sprite.load('grassland_tileset_bg.png'),
+      size: Vector2(
+        size.x,
+        size.y * 0.50,
+      ),
+      position: Vector2(
+        0,
+        size.y * 0.50,
+      ),
+    );
+
+    add(ground);
 
     player = Player(
       position: Vector2(
