@@ -22,6 +22,63 @@ class RunnerApp extends StatelessWidget {
                 gameProvider: context.read<GameProvider>(),
               ),
               overlayBuilderMap: {
+                'menu': (context, game) {
+                  final gameInstance = game as StrawberrySprintGame;
+
+                  return Center(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 32,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            '🍓',
+                            style: TextStyle(fontSize: 56),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'STRAWBERRY SPRINT',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          const Text(
+                            'HIGH SCORE',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            '0',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            onPressed: () {
+                              gameInstance.startGame();
+                            },
+                            child: const Text('START'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
                 'pause': (context, game) {
                   return Center(
                     child: Container(

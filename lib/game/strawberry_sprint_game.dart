@@ -13,7 +13,7 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
 
   late final Player player;
 
-  GameState currentState = GameState.playing;
+  GameState currentState = GameState.menu;
 
   int score = 0;
   double _scoreTimer = 0;
@@ -47,13 +47,15 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
       ObstacleSpawner(),
     );
 
-    overlays.add('hud');
+    overlays.add('menu');
+    pauseEngine();
   }
 
   void gameOver() {
 
     currentState = GameState.gameOver;
 
+    overlays.remove('menu');
     overlays.add('gameOver');
 
     pauseEngine();
@@ -118,6 +120,19 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
     currentState = GameState.playing;
     gameProvider.setPaused(false);
     overlays.remove('pause');
+    resumeEngine();
+  }
+
+  void startGame() {
+    currentState = GameState.playing;
+
+    score = 0;
+    _scoreTimer = 0;
+    gameProvider.reset();
+
+    overlays.remove('menu');
+    overlays.add('hud');
+
     resumeEngine();
   }
 
