@@ -6,12 +6,23 @@ import 'systems/obstacle_spawner.dart';
 import 'game_state.dart';
 import 'components/obstacle.dart';
 
+import '../providers/game_provider.dart';
+
 
 class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
 
   late final Player player;
 
   GameState currentState = GameState.playing;
+
+  int score = 0;
+  double _scoreTimer = 0;
+
+  StrawberrySprintGame({
+    required this.gameProvider,
+  });
+
+  final GameProvider gameProvider;
   
   @override
   Color backgroundColor() {
@@ -35,6 +46,8 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
     add(
       ObstacleSpawner(),
     );
+
+    overlays.add('hud');
   }
 
   void gameOver() {
@@ -48,6 +61,10 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
 
   void restartGame() {
     currentState = GameState.playing;
+
+    score = 0;
+    _scoreTimer = 0;
+    gameProvider.reset();
 
     overlays.remove('gameOver');
 
@@ -63,6 +80,23 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
     );
 
     resumeEngine();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    if (currentState != GameState.playing) {
+      return;
+    }
+
+    _scoreTimer += dt;
+
+    if (_scoreTimer >= 1) {
+      _scoreTimer -= 1;
+      score++;
+      gameProvider.updateScore(score);
+    }
   }
 
   
