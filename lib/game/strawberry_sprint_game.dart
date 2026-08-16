@@ -99,5 +99,27 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
     }
   }
 
+  void pauseGame() {
+    if (currentState != GameState.playing) {
+      return;
+    }
+
+    currentState = GameState.paused;
+    gameProvider.setPaused(true);
+    overlays.add('pause');
+    pauseEngine();
+  }
+
+  void resumeGame() {
+    if (currentState != GameState.paused) {
+      return;
+    }
+
+    currentState = GameState.playing;
+    gameProvider.setPaused(false);
+    overlays.remove('pause');
+    resumeEngine();
+  }
+
   
 }
