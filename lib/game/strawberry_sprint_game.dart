@@ -55,6 +55,8 @@ class StrawberrySprintGame extends FlameGame with HasCollisionDetection {
 
     currentState = GameState.gameOver;
 
+    gameProvider.saveHighScore();
+
     overlays.remove('menu');
     overlays.add('gameOver');
 

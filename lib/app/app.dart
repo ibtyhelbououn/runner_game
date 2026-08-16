@@ -11,7 +11,7 @@ class RunnerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => GameProvider(),
+      create: (_) => GameProvider()..loadHighScore(),
       child: Builder(
         builder: (context) {
           return MaterialApp(
@@ -23,60 +23,65 @@ class RunnerApp extends StatelessWidget {
               ),
               overlayBuilderMap: {
                 'menu': (context, game) {
-                  final gameInstance = game as StrawberrySprintGame;
+                  return Consumer<GameProvider>(
+                    builder: (context, gameProvider, child) {
+                      return Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 32,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                '🍓',
+                                style: TextStyle(fontSize: 56),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'STRAWBERRY SPRINT',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              const Text(
+                                'HIGH SCORE',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${gameProvider.highScore}',
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              ElevatedButton(
+                                onPressed: () {
+                                  final gameInstance =
+                                      game as StrawberrySprintGame;
 
-                  return Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 32,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            '🍓',
-                            style: TextStyle(fontSize: 56),
+                                  gameInstance.startGame();
+                                },
+                                child: const Text('START'),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'STRAWBERRY SPRINT',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          const Text(
-                            'HIGH SCORE',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            '0',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          ElevatedButton(
-                            onPressed: () {
-                              gameInstance.startGame();
-                            },
-                            child: const Text('START'),
-                          ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   );
                 },
                 'pause': (context, game) {
@@ -111,36 +116,89 @@ class RunnerApp extends StatelessWidget {
                   );
                 },
                 'gameOver': (context, game) {
-                  return Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            'GAME OVER',
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              final gameInstance =
-                                  game as StrawberrySprintGame;
+                  return Consumer<GameProvider>(
+                    builder: (context, gameProvider, child) {
+                      final isNewHighScore =gameProvider.isNewHighScore;
 
-                              gameInstance.restartGame();
-                            },
-                            child: const Text('PLAY AGAIN'),
+                      return Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 32,
                           ),
-                        ],
-                      ),
-                    ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'GAME OVER',
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'YOUR SCORE',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${gameProvider.score}',
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'HIGH SCORE',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${gameProvider.highScore}',
+                                style: const TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              if (isNewHighScore) ...[
+                                const SizedBox(height: 12),
+                                const Text(
+                                  '🎉 NEW HIGH SCORE!',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                              const SizedBox(height: 24),
+                              ElevatedButton(
+                                onPressed: () {
+                                  final gameInstance =
+                                      game as StrawberrySprintGame;
+
+                                  gameInstance.restartGame();
+                                },
+                                child: const Text('PLAY AGAIN'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
                 'hud': (context, game) {
